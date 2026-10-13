@@ -1,0 +1,129 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 25,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "windows-msvc",
+      "displayName": "Windows MSVC",
+      "description": "Native Windows build with MSVC. Requires Visual Studio 2022 or a compatible MSVC toolchain.",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64",
+      "binaryDir": "${sourceDir}/build/windows-msvc",
+      "cacheVariables": {
+        "CMAKE_CONFIGURATION_TYPES": "Debug;Release",
+        "NEONMATH_PLATFORM": "WINDOWS",
+        "NEONMATH_BUILD_TESTS": "ON"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "linux-gcc",
+      "displayName": "Linux GCC",
+      "description": "Native Linux build with GCC or Clang. Requires a working C++ toolchain.",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/linux-gcc",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "NEONMATH_PLATFORM": "LINUX",
+        "NEONMATH_BUILD_TESTS": "ON"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
+      "name": "macos-clang",
+      "displayName": "macOS Clang",
+      "description": "Native macOS build with Clang. Requires Xcode Command Line Tools.",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/macos-clang",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "NEONMATH_PLATFORM": "MACOS",
+        "NEONMATH_BUILD_TESTS": "ON"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      }
+    },
+    {
+      "name": "android-arm64",
+      "displayName": "Android ARM64",
+      "description": "Android cross-compilation for arm64-v8a. Requires Android NDK and a matching toolchain file.",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/android-arm64",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "NEONMATH_PLATFORM": "ANDROID",
+        "CMAKE_TOOLCHAIN_FILE": "$env{ANDROID_NDK_HOME}/build/cmake/android.toolchain.cmake",
+        "ANDROID_ABI": "arm64-v8a",
+        "ANDROID_PLATFORM": "android-24",
+        "NEONMATH_BUILD_TESTS": "OFF"
+      }
+    },
+    {
+      "name": "ios-device",
+      "displayName": "iOS Device",
+      "description": "iOS device build. Requires an Apple toolchain and a valid iOS SDK.",
+      "generator": "Xcode",
+      "binaryDir": "${sourceDir}/build/ios-device",
+      "cacheVariables": {
+        "CMAKE_SYSTEM_NAME": "iOS",
+        "CMAKE_OSX_ARCHITECTURES": "arm64",
+        "CMAKE_BUILD_TYPE": "Release",
+        "NEONMATH_PLATFORM": "IOS",
+        "NEONMATH_BUILD_TESTS": "OFF"
+      }
+    },
+    {
+      "name": "web-emscripten",
+      "displayName": "WebAssembly via Emscripten",
+      "description": "Wasm build. Requires Emscripten and a valid compiler environment.",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/web-emscripten",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "NEONMATH_PLATFORM": "WEB",
+        "NEONMATH_BUILD_TESTS": "OFF"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "windows-msvc",
+      "configurePreset": "windows-msvc"
+    },
+    {
+      "name": "linux-gcc",
+      "configurePreset": "linux-gcc"
+    },
+    {
+      "name": "macos-clang",
+      "configurePreset": "macos-clang"
+    },
+    {
+      "name": "android-arm64",
+      "configurePreset": "android-arm64"
+    },
+    {
+      "name": "ios-device",
+      "configurePreset": "ios-device"
+    },
+    {
+      "name": "web-emscripten",
+      "configurePreset": "web-emscripten"
+    }
+  ]
+}
